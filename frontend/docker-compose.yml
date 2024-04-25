@@ -1,0 +1,14 @@
+version: '3'
+services:
+  frontend:
+    build: ./frontend
+    context: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./frontend/src:/app/src/main.ts
+      - ./frontend/public:/app/public
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"

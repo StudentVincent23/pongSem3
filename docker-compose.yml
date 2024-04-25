@@ -1,0 +1,10 @@
+#docker compose up --build
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:8080"
+  backend:
+    build: ./backend
+    ports:
+      - "5080:5080"

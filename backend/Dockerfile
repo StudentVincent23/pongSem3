@@ -1,5 +1,5 @@
 # Use the official Node.js 14 image
-FROM node:14
+FROM node:lts-alpine
 
 # Set the working directory in the container
 WORKDIR /app
@@ -13,8 +13,11 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Expose port 3000 to the outside world
-EXPOSE 3000
+# Expose port 5080 to the outside world
+EXPOSE 5080
 
 # Command to run the application
-CMD ["npm", "start"]
+#npx prisma studio
+
+RUN npx prisma generate
+CMD ["npx", "ts-node", "controller.ts"]

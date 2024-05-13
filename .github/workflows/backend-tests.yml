@@ -1,4 +1,4 @@
-name: Run frontend-tests
+name: Run backend-tests
 
 on:
   push:

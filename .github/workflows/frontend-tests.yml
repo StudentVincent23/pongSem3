@@ -19,13 +19,17 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14'
+      - name: ls test
+        run: ls
       - name: Change to frontend directory
         run: cd ..
-      - name: Change to frontend directory again 1
+      - name: ls test
         run: ls
-      # - name: Change to frontend directory again
-      #   run: cd .\frontend\
-      # - name: Install dependencies
-      #   run: npm install
-      # - name: Run tests
-      #   run: npm test
+      - name: Change to frontend directory again
+        run: cd .\frontend\
+      - name: ls test
+        run: ls
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test

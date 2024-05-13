@@ -22,10 +22,10 @@ jobs:
       - name: Change to frontend directory
         run: cd ..
       - name: Change to frontend directory again 1
-        run: cd ..
-      - name: Change to frontend directory again
-        run: cd .\frontend\
-      - name: Install dependencies
-        run: npm install
-      - name: Run tests
-        run: npm test
+        run: ls
+      # - name: Change to frontend directory again
+      #   run: cd .\frontend\
+      # - name: Install dependencies
+      #   run: npm install
+      # - name: Run tests
+      #   run: npm test

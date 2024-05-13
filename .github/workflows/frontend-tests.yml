@@ -21,6 +21,8 @@ jobs:
           node-version: '14'
       - name: Change to frontend directory
         run: cd ..
+      - name: Change to frontend directory again 1
+        run: cd ..
       - name: Change to frontend directory again
         run: cd .\frontend\
       - name: Install dependencies

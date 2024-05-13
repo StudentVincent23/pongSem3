@@ -27,30 +27,9 @@ export async function UpdateScoreOfUserById(id: any, score: number) {
 
 
 async function main() {
-    // create user
-    // const user = await prisma.user.create({
-    //     data: {
-    //         name: 'Kees',
-    //         score: 72
-    // },
-    // })
-
-    // get all users
     const users = await prisma.user.findMany();
 
-    // update data
-    // const user = await prisma.user.update({
-    //     where: {id: 1},
-    //     data:{ name: 'kees'}
-    // })
-
-    // delete data
-    // const article = await prisma.article.delete({
-    //     where: {id: 2}
-    // })
-
     console.log(users);
-
 }
 
 main()

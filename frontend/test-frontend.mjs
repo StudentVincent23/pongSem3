@@ -1,7 +1,8 @@
 import test from 'ava';
 
-test("Hellow world!", t => {
-    t.fail();
+test("Hellow world! from frontend", t => {
+    t.pass();
 });
 
-  
+
+

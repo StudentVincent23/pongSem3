@@ -25,6 +25,11 @@ export async function UpdateScoreOfUserById(id: any, score: number) {
     })
 }
 
+export async function DeleteUserById(id: any) {
+    const user = await prisma.user.delete({
+        where: { id: id },
+    });
+}
 
 async function main() {
     const users = await prisma.user.findMany();

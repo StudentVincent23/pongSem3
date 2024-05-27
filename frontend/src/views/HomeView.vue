@@ -1,15 +1,3 @@
-<!-- <template>
-  <div class="Home">
-    <h1>This is a home page</h1>
-  </div>
-</template>
-
-<style>
-  body {
-      background-color: #646571;
-  }
-</style> -->
-
 <template>
   <div class="Home">
     <h1>PONG</h1>

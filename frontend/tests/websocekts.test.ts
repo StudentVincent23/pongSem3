@@ -1,6 +1,5 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { sendWebsocket, receiveWebsocket, getCallbackWebsocket, setCallbackWebsocket } from '../src/websocket';
-import { beforeEach } from 'vitest';
 
 describe('Websocket Functions', () => {
   let mockSocket;

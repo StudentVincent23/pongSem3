@@ -73,7 +73,6 @@ describe('WebSocket server', () => {
       expect(prefix).toBe('NT'); // Check that the server responded with 'NT'
       expect(name).toBe('TestUser'); // Check that the user's name is correct
       expect(score).toBe('100'); // Check that the user's score is correct
-      // Check the id if necessary
     });
   });
 

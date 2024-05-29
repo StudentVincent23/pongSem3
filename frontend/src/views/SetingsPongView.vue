@@ -15,6 +15,10 @@
         <label for="checkboxBuffs">Buffs</label>
       </div>
       <div>
+        <input type="checkbox" id="checkboxPlayer2" name="Player2WS" v-model="player2WS" @change="handlePlayer2WSChange">
+        <label for="checkboxPlayer2WSs">Player2WS</label>
+      </div>
+      <div>
         <button ref="btnRefChangeBackgroundColor">Change Background Color</button>
       </div>
       <div>
@@ -38,6 +42,7 @@
   const pcEnabled = ref(false);
   const pcBadEnabled = ref(false);
   const buffsEnabled = ref(false);
+  const player2WS = ref(false);
   
   const handlePcEnabledChange = () => {
     updateCookie('pcEnabled', pcEnabled.value);
@@ -50,11 +55,16 @@
   const handlePcBadEnabledChange = () => {
     updateCookie('pcBadEnabled', pcBadEnabled.value);
   };
+
+  const handlePlayer2WSChange = () => {
+    updateCookie('player2WS', player2WS.value);
+  };
   
   onMounted(() => {
     const pcEnabledCookie = getCookie('pcEnabled');
     const buffsEnabledCookie = getCookie('buffsEnabled');
     const pcBadEnabledCookie = getCookie('pcBadEnabled');
+    const player2WSCookie = getCookie('player2WS');
     if (pcEnabledCookie !== null) {
       pcEnabled.value = pcEnabledCookie === 'true';
     }
@@ -63,6 +73,9 @@
     }
     if (pcBadEnabledCookie !== null) {
       pcBadEnabled.value = pcBadEnabledCookie === 'true';
+    }
+    if (player2WSCookie !== null) {
+      player2WS.value = player2WSCookie === 'true';
     }
 
     btnRefChangeBackgroundColor.value.addEventListener('click', () => {

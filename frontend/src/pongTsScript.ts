@@ -7,6 +7,9 @@ let sizeSquares: number = 5; // Size of each square
 const keysPressed: boolean[] = [];
 const KEY_UP: number = 38;
 const KEY_DOWN: number = 40;
+const KEY_W: number = 87;
+const KEY_S: number = 83;
+
 
 // send data to database
 import { sendWebsocket } from './websocket';
@@ -78,6 +81,7 @@ interface PaddleObject { // kan ook zonder echter voor toekomst mss handig voor 
     width: number;
     height: number;
     score: number;
+
     update: (canvas: HTMLCanvasElement) => void;
     draw: (ctx: CanvasRenderingContext2D) => void;
     getHalfWidth: () => number;
@@ -91,26 +95,37 @@ class Paddle implements PaddleObject {
     width: number;
     height: number;
     score: number;
+    id: string;
+    
 
-    constructor(pos: { x: number; y: number }, velocity: { x: number; y: number }, width: number, height: number) {
+    constructor(pos: { x: number; y: number }, velocity: { x: number; y: number }, width: number, height: number,  id: string) {
         this.pos = pos;
         this.velocity = velocity;
         this.width = width;
         this.height = height;
         this.score = 0;
+        this.id = id;
     }
 
     update(canvas: HTMLCanvasElement): void {
-        if (keysPressed[KEY_UP]) {
-            this.pos.y -= this.velocity.y;
-        } else if (keysPressed[KEY_DOWN]) {
-            this.pos.y += this.velocity.y;
+        if (this.id === 'player1') {
+            if (keysPressed[KEY_UP]) {
+                this.pos.y -= this.velocity.y;
+            } else if (keysPressed[KEY_DOWN]) {
+                this.pos.y += this.velocity.y;
+            }
+        } else if (this.id === 'player2') {
+            if (keysPressed[KEY_W]) {
+                this.pos.y -= this.velocity.y;
+            } else if (keysPressed[KEY_S]) {
+                this.pos.y += this.velocity.y;
+            }
         }
 
-
-        if (this.pos.y <= 0) {
+        // Check for wall collision
+        if (this.pos.y < 0) { // Hit the top wall
             this.pos.y = 0;
-        } else if (this.pos.y + this.height >= canvas.height) {
+        } else if (this.pos.y + this.height > canvas.height) { // Hit the bottom wall
             this.pos.y = canvas.height - this.height;
         }
     }
@@ -138,22 +153,38 @@ function pongPaddleCollision(pong: Pong, paddle: Paddle): void {
     let dy: number = Math.abs(pong.pos.y - paddle.getCenter().y);
 
     if (dx <= pong.radius + paddle.getHalfWidth() && dy <= pong.radius + paddle.getHalfHeight()) {
+        // Adjust pong's position
         if (pong.velocity.x > 0) {
             pong.pos.x = paddle.pos.x - pong.radius;
         } else {
             pong.pos.x = paddle.pos.x + paddle.width + pong.radius;
         }
 
-        // Bounce back randomly
-        if (Math.random() < 0.5) {
-            pong.velocity.x *= -1;
-        }
-        if (Math.random() < 0.5) {
-            pong.velocity.y *= -1;
+        // Calculate the difference from the paddle's center
+        let distanceFromCenter = pong.pos.y - paddle.getCenter().y;
+        let normalizedDistance = distanceFromCenter / paddle.getHalfHeight(); // Normalize the distance
+
+        // Calculate the current speed (magnitude of velocity vector)
+        let speed = Math.sqrt(pong.velocity.x * pong.velocity.x + pong.velocity.y * pong.velocity.y);
+
+        // Adjust the velocity direction based on the hit position
+        let maxBounceAngle = Math.PI / 4; // 45 degrees
+        let bounceAngle = normalizedDistance * maxBounceAngle;
+
+        // Reverse the horizontal direction
+        let newVelocityX = -Math.sign(pong.velocity.x) * Math.cos(bounceAngle) * speed;
+        let newVelocityY = Math.sin(bounceAngle) * speed;
+
+        // Apply the new velocities
+        pong.velocity.x = newVelocityX;
+        pong.velocity.y = newVelocityY;
+
+        // Ensure the ball doesn't get stuck with a zero vertical velocity
+        if (Math.abs(pong.velocity.y) < 0.1) {
+            pong.velocity.y = Math.sign(pong.velocity.y) * 0.1;
         }
     }
 }
-
 
 function respawnBall(pong: Pong, canvas: HTMLCanvasElement): void {
     if (pong.velocity.x > 0) {
@@ -396,8 +427,12 @@ function vec2(x: number, y: number): { x: number, y: number } { // helper voor 2
 
 export function gameLoop(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     const pong = new Pong(vec2(canvas.width / 2, canvas.height / 2), vec2(1, 1), 5);
-    const paddle1 = new Paddle(vec2(0, 50), vec2(1, 1), 5, 30);
-    const paddle2 = new Paddle(vec2(canvas.width - 5, 50), vec2(1, 1), 5, 30);
+    const paddle1 = new Paddle(vec2(0, 50), vec2(1, 1), 5, 30, 'player1');
+    const paddle2 = new Paddle(vec2(canvas.width - 5, 50), vec2(1, 1), 5, 30, 'nvt');
+
+    if (getCookie('player2WS') === 'true') {
+        paddle2.id = 'player2';
+    }
 
     if (getCookie('buffsEnabled') == 'true') {
         generateSquares(canvas, squares);
@@ -420,9 +455,6 @@ export function gameLoop(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2
             drawSquares(ctx, canvas);
             checkSquareCollision(canvas, pong, paddle1, paddle2, squares); // als ai aan staat moet up is down paddle 2 ook aan gaan case 4
         }
-        
-        // player 2 with W en S
-        // slechtere PC
 
         requestAnimationFrame(gameLoop);
     }
@@ -433,6 +465,7 @@ export function gameLoop(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2
 function gameUpdate(canvas: HTMLCanvasElement, pong: Pong, paddle1: Paddle, paddle2: Paddle): void {
     pong.update(canvas);
     paddle1.update(canvas); // player 1
+    paddle2.update(canvas);
     pongPaddleCollision(pong, paddle1);
     pongPaddleCollision(pong, paddle2);
     increaseScore(pong, paddle1, paddle2, canvas);

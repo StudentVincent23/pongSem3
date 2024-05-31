@@ -10,7 +10,6 @@ const KEY_DOWN: number = 40;
 const KEY_W: number = 87;
 const KEY_S: number = 83;
 
-
 // send data to database
 import { sendWebsocket } from './websocket';
 const socket = new WebSocket('ws://localhost:5080/websocket');

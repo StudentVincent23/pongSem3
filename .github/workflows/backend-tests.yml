@@ -53,6 +53,8 @@ jobs:
         run: |
           cd backend
           npx prisma migrate deploy
+        env:
+          DATABASE_URL: "file::memory:"
 
       - name: Run tests
         run: |

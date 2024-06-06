@@ -49,10 +49,11 @@ jobs:
           cd backend
           npx prisma generate
 
-      - name: Apply migrations
+      - name: Apply migrations and run tests
         run: |
           cd backend
           npx prisma migrate deploy
+          npm run test
         env:
           DATABASE_URL: "file::memory:"
 

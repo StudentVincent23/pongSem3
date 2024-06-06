@@ -1,8 +1,8 @@
 import { getCookie,updateCookie } from './cookies';
 
 const squares: { pos: { x: number, y: number }, size: number, visible: boolean }[] = [];
-let numSquares: number = 7; // Number of squares to generate
-let sizeSquares: number = 5; // Size of each square
+const numSquares: number = 7; // Number of squares to generate
+const sizeSquares: number = 5; // Size of each square
 
 const keysPressed: boolean[] = [];
 const KEY_UP: number = 38;
@@ -14,13 +14,13 @@ const KEY_S: number = 83;
 import { sendWebsocket } from './websocket';
 const socket = new WebSocket('ws://localhost:5080/websocket');
 function updateDataBaseScore(newHighScore :any):void {
-    var playerScore = getCookie("playerHighscore");
+    const playerScore = getCookie("playerHighscore");
     if (playerScore !== null) {
         const score = parseInt(playerScore);
 
         if (score < newHighScore) {
             const playerName = getCookie("playerName");
-            var highScoreMsg = "P" + " " + playerName + " " + newHighScore;
+            const highScoreMsg = "P" + " " + playerName + " " + newHighScore;
             
             updateCookie('playerHighscore', newHighScore);
             sendWebsocket(socket, highScoreMsg);
@@ -148,8 +148,8 @@ class Paddle implements PaddleObject {
 }
 
 function pongPaddleCollision(pong: Pong, paddle: Paddle): void {
-    let dx: number = Math.abs(pong.pos.x - paddle.getCenter().x);
-    let dy: number = Math.abs(pong.pos.y - paddle.getCenter().y);
+    const dx: number = Math.abs(pong.pos.x - paddle.getCenter().x);
+    const dy: number = Math.abs(pong.pos.y - paddle.getCenter().y);
 
     if (dx <= pong.radius + paddle.getHalfWidth() && dy <= pong.radius + paddle.getHalfHeight()) {
         // Adjust pong's position
@@ -160,19 +160,19 @@ function pongPaddleCollision(pong: Pong, paddle: Paddle): void {
         }
 
         // Calculate the difference from the paddle's center
-        let distanceFromCenter = pong.pos.y - paddle.getCenter().y;
-        let normalizedDistance = distanceFromCenter / paddle.getHalfHeight(); // Normalize the distance
+        const distanceFromCenter = pong.pos.y - paddle.getCenter().y;
+        const normalizedDistance = distanceFromCenter / paddle.getHalfHeight(); // Normalize the distance
 
         // Calculate the current speed (magnitude of velocity vector)
-        let speed = Math.sqrt(pong.velocity.x * pong.velocity.x + pong.velocity.y * pong.velocity.y);
+        const speed = Math.sqrt(pong.velocity.x * pong.velocity.x + pong.velocity.y * pong.velocity.y);
 
         // Adjust the velocity direction based on the hit position
-        let maxBounceAngle = Math.PI / 4; // 45 degrees
-        let bounceAngle = normalizedDistance * maxBounceAngle;
+        const maxBounceAngle = Math.PI / 4; // 45 degrees
+        const bounceAngle = normalizedDistance * maxBounceAngle;
 
         // Reverse the horizontal direction
-        let newVelocityX = -Math.sign(pong.velocity.x) * Math.cos(bounceAngle) * speed;
-        let newVelocityY = Math.sin(bounceAngle) * speed;
+        const newVelocityX = -Math.sign(pong.velocity.x) * Math.cos(bounceAngle) * speed;
+        const newVelocityY = Math.sin(bounceAngle) * speed;
 
         // Apply the new velocities
         pong.velocity.x = newVelocityX;
@@ -291,7 +291,7 @@ function generateSquares(canvas: HTMLCanvasElement, squares: { pos: { x: number;
 }
 
 
-function drawSquares(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void {
+function drawSquares(ctx: CanvasRenderingContext2D): void {
     ctx.fillStyle = "#ffff00"; // Yellow color for squares
     squares.forEach(square => {
         if (square.visible) {
@@ -451,7 +451,7 @@ export function gameLoop(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2
         }
 
         if (getCookie('buffsEnabled') == 'true') {
-            drawSquares(ctx, canvas);
+            drawSquares(ctx);
             checkSquareCollision(canvas, pong, paddle1, paddle2, squares); // als ai aan staat moet up is down paddle 2 ook aan gaan case 4
         }
 

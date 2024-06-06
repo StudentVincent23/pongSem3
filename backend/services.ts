@@ -1,11 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import exp from "constants";
 // npx ts-node controller.ts
 // om het te runnen
 const prisma = new PrismaClient();
 
 export async function AddUser(name: string, score: number) {
-    const user = await prisma.user.create({
+    await prisma.user.create({
         data: {
             name: name,
             score: score
@@ -18,24 +17,20 @@ export async function GetUsers() {
     return users;
 }
 
-export async function UpdateScoreOfUserById(id: any, score: number) {
-    const user = await prisma.user.update({
+export async function UpdateScoreOfUserById(id: number, score: number) {
+    await prisma.user.update({
         where: {id: id},
-        data:{ score: score}
-    })
-}
+        data:{ score: score} }) }
 
-export async function DeleteUserById(id: any) {
-    const user = await prisma.user.delete({
+export async function DeleteUserById(id: number) {
+    await prisma.user.delete({
         where: { id: id },
     });
 }
 
 async function main() {
     const users = await prisma.user.findMany();
-
-    console.log(users);
-}
+    console.log(users);}
 
 main()
     .then(async () => {
@@ -44,5 +39,4 @@ main()
     .catch(async (e) => {
         console.error(e);
         await prisma.$disconnect();
-        process.exit(1);
-    })
+        process.exit(1); })

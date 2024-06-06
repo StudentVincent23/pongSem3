@@ -19,7 +19,7 @@ server.on('upgrade', (request, socket, head) => {
 });
 
 wss.on('connection', (ws: WebSocket) => {
-    ws.on('message', async (message: String) => {
+    ws.on('message', async (message: string) => {
         message = message.toString();
         if (message[0] === 'B' && message[1] === '#') {
             ws.send(message); // Echo back to client
@@ -51,7 +51,7 @@ wss.on('connection', (ws: WebSocket) => {
             const existingUser = users.find(user => user.name === messageParts[1]);
 
             if (existingUser) {
-                var userMsgBack = "NT " + existingUser.name + " " + existingUser.score + " " + existingUser.id;
+                const userMsgBack = "NT " + existingUser.name + " " + existingUser.score + " " + existingUser.id;
                 ws.send(userMsgBack);
             } else {
                 ws.send('NF');

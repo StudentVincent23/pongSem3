@@ -14,12 +14,7 @@ export const receiveWebsocket = (socket: WebSocket) => {
 };
 
 export const getCallbackWebsocket = () => {
-    // console.log('callbackWebsocket :', msgValue);
     return msgValue;
 }
 
-export const setCallbackWebsocket = (val: any) => {
-    // console.log('callbackWebsocket :', val);
-    msgValue = val;
-    return val;
-}
+export const setCallbackWebsocket = (val: any) => { msgValue = val; }

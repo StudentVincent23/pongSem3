@@ -1,6 +1,6 @@
 # pongSem3
 
-This project is a pong game developed with Vue.js and TypeScript. It includes a frontend developed with Vue.js and a backend developed with TypeScript and Prisma.
+This project is a pong game developed with Vue.js and TypeScript. It includes a frontend developed with Vue.js and a backend developed with TypeScript and Prisma. For futher explenation look in the README of the backend/frontend.
 
 ## Getting Started
 

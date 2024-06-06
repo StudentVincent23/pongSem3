@@ -15,21 +15,18 @@
         <form @submit.prevent="addEventListener">
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input ref="textSNameInlogRef" type="text" v-model="name" placeholder="login naam">
+                <input ref="textSNameInlogRef" type="text" v-model="nameInlog" placeholder="login naam">
             </div>
             <button ref="buttonInlogRef">inloggen</button>
         </form>
     </div>
 
-    
     <div class="logged-in-container">
         <h2 style="color: white;">Logged In:</h2>
         <label style="color: white;">{{ loggedInName }}</label>
         <h2 style="color: white;">HighScore:</h2>
         <label style="color: white;">{{ loggedInHighscore }}</label>
     </div>
-
-
 </template>
 
 <script setup>
@@ -44,6 +41,8 @@
     const buttonInlogRef = ref(null);
     const loggedInName = ref('');
     const loggedInHighscore = ref('');
+    const name = ref('');
+    const nameInlog = ref(''); 
     let msg = null;
 
 
@@ -102,4 +101,4 @@
 
 <style scoped>
   @import '../styleSheets/styleSheetInlogpage.css';
-</style>
+</style> 

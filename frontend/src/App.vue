@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-import router from './router';
 </script>
 
 <template>
@@ -14,7 +12,6 @@ import router from './router';
       <RouterLink to="/inlog">inloggen</RouterLink>
     </nav>
   
-
   <RouterView />
 </template>
 

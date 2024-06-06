@@ -6,21 +6,55 @@ on:
       - 'main'
   pull_request:
     branches:
-     - 'main'
-    
+      - 'main'
+
 jobs:
   tests:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: testdb
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DATABASE_URL: postgres://testuser:testpassword@localhost:5432/testdb
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-      - name: Install dependencies and run tests
+
+      - name: Install dependencies
         run: |
           cd backend
           npm install
+
+      - name: Generate Prisma Client
+        run: |
+          cd backend
+          npx prisma generate
+
+      - name: Apply migrations
+        run: |
+          cd backend
+          npx prisma migrate deploy
+
+      - name: Run tests
+        run: |
+          cd backend
           npm run test

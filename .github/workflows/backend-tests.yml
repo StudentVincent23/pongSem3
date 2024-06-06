@@ -57,6 +57,6 @@ jobs:
           DATABASE_URL: "file::memory:"
 
       - name: Run tests
-        run: |
-          cd backend
-          npm run test
+        run: npm run test
+        env:
+          DATABASE_URL: "file:./dev.db"

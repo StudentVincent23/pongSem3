@@ -1,9 +1,11 @@
+// npx prisma studio  // om de database te bekijken
+// npx ts-node controller.ts
+
 import express from 'express';
 import * as http from 'http';
 import * as WebSocket from 'ws';
-import { AddUser, GetUsers, UpdateScoreOfUserById } from './services';
-// npx prisma studio  // om de database te bekijken
-// npx ts-node controller.ts
+import { AddUser, GetUsers, UpdateScoreOfUserById, DeleteUserById } from './services';
+
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ noServer: true });
@@ -18,63 +20,76 @@ server.on('upgrade', (request, socket, head) => {
     }
 });
 
-wss.on('connection', (ws: WebSocket) => {
-    ws.on('message', async (message: string) => {
-        message = message.toString();
-        if (message[0] === 'B' && message[1] === '#') {
-            ws.send(message); // Echo back to client
-        } else if (message[0] === 'S' && message[1] === '#') {
-            ws.send(message); // Echo back to client
-        } else if(message[0] === 'U'){ // add user
-            const messageParts = message.split(' ');
-            const users = await GetUsers(); // Get the list of users using await since getUsers is an async function
-            const existingUser = users.find(user => user.name === messageParts[1]);
+const handleMessage = async (message: string, ws: WebSocket) => {
+    message = message.toString();
+    if (message.startsWith('B#')) {
+        ws.send(message); // Echo back to client
+    } else if (message.startsWith('S#')) {
+        ws.send(message); // Echo back to client
+    } else if (message.startsWith('U')) { // add user
+        const messageParts = message.split(' ');
+        const users = await GetUsers();
+        const existingUser = users.find(user => user.name === messageParts[1]);
 
-            if (existingUser) {
-                ws.send('UF');
-            } else {
-                AddUser(messageParts[1], parseInt(messageParts[2]));
-            }
-        } else if(message[0] === 'I'){ // check if user exists
-            const messageParts = message.split(' ');
-            const users = await GetUsers(); // Get the list of users using await since getUsers is an async function
-            const existingUser = users.find(user => user.name === messageParts[1]);
-
-            if (existingUser) {
-                ws.send('IT');
-            } else {
-                ws.send('IF');
-            }
-        } else if(message[0] === 'N'){ // get user with name
-            const messageParts = message.split(' ');
-            const users = await GetUsers(); // Get the list of users using await since getUsers is an async function
-            const existingUser = users.find(user => user.name === messageParts[1]);
-
-            if (existingUser) {
-                const userMsgBack = "NT " + existingUser.name + " " + existingUser.score + " " + existingUser.id;
-                ws.send(userMsgBack);
-            } else {
-                ws.send('NF');
-            }
-        } else if(message[0] === 'P'){ // nieuw high score aka punten
-            const messageParts = message.split(' ');
-            const users = await GetUsers(); // Get the list of users using await since getUsers is an async function
-            const existingUser = users.find(user => user.name === messageParts[1]);
-
-            if (existingUser) {
-                UpdateScoreOfUserById(existingUser.id, parseInt(messageParts[2]));
-            } else {
-                ws.send('HF');
-            }
+        if (existingUser) {
+            ws.send('UF');
+        } else {
+            await AddUser(messageParts[1], parseInt(messageParts[2]));
+            ws.send('UT');
         }
-    });
+    } else if (message.startsWith('I')) { // check if user exists
+        const messageParts = message.split(' ');
+        const users = await GetUsers();
+        const existingUser = users.find(user => user.name === messageParts[1]);
+
+        if (existingUser) {
+            ws.send('IT');
+        } else {
+            ws.send('IF');
+        }
+    } else if (message.startsWith('N')) { // get user with name
+        const messageParts = message.split(' ');
+        const users = await GetUsers();
+        const existingUser = users.find(user => user.name === messageParts[1]);
+
+        if (existingUser) {
+            const userMsgBack = `NT ${existingUser.name} ${existingUser.score} ${existingUser.id}`;
+            ws.send(userMsgBack);
+        } else {
+            ws.send('NF');
+        }
+    } else if (message.startsWith('P')) { // nieuw high score aka punten
+        const messageParts = message.split(' ');
+        const users = await GetUsers();
+        const existingUser = users.find(user => user.name === messageParts[1]);
+
+        if (existingUser) {
+            await UpdateScoreOfUserById(existingUser.id, parseInt(messageParts[2]));
+            ws.send('PT');
+        } else {
+            ws.send('HF');
+        }
+    } else if (message.startsWith('D')) { // delete user
+        const messageParts = message.split(' ');
+        const users = await GetUsers();
+        const existingUser = users.find(user => user.name === messageParts[1]);
+
+        if (existingUser) {
+            await DeleteUserById(existingUser.id);
+            ws.send('DT');
+        } else {
+            ws.send('DF');
+        }
+    }
+};
+
+wss.on('connection', (ws: WebSocket) => {
+    ws.on('message', (message: string) => handleMessage(message, ws));
 });
 
 const PORT = process.env.PORT || 5080;
-
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-
-
+export { server, wss, handleMessage };

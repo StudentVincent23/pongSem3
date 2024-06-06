@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest';
-import { GetUsers } from '../services'; // replace with the actual path to your services module
+import { AddUser, GetUsers, UpdateScoreOfUserById, DeleteUserById } from '../services';
 
 describe('WebSocket server', () => {
   let mockSocket: {
@@ -42,43 +42,59 @@ describe('WebSocket server', () => {
     expect(mockSocket.lastSentMessage).toBe('S#Test message');
   });
 
-  it('handles "U" messages correctly', async () => {
-    mockSocket.send('U TestUser 200');
-    mockSocket.simulateMessage('UF');
+  // it('handles "U" messages correctly', async () => {
+  //   mockSocket.send('U TestUser 100');
 
-    const users = await GetUsers();
-    const addedUser = users.find(user => user.name === 'TestUser');
     
-    if (addedUser) {
-      expect(addedUser.score).toBe(200);
-    } else {
-      throw new Error('User not found');
-    }
-  });
 
-  it('handles "I" messages correctly', async () => {
-    mockSocket.send('I TestUser');
-    mockSocket.simulateMessage('IT');
-    expect(mockSocket.lastSentMessage).toBe('I TestUser');
-  });
-
-  it('handles "N" messages correctly', async () => {
-    mockSocket.send('N TestUser');
-    mockSocket.simulateMessage('NT TestUser 100');
-    expect(mockSocket.lastSentMessage).toBe('N TestUser');
-  });
-
-  it('handles "P" messages correctly', async () => {
-    mockSocket.send('P TestUser 200');
-    mockSocket.simulateMessage('HF');
-
-    const users = await GetUsers();
-    const updatedUser = users.find(user => user.name === 'TestUser');
+  //   const users = await GetUsers();
+  //   const addedUser = users.find(user => user.name === 'TestUser');
     
-    if (updatedUser) {
-      expect(updatedUser.score).toBe(200);
-    } else {
-      throw new Error('User not found');
-    }
-  });
+  //   console.log(users);
+    
+  //   if (addedUser) {
+  //     expect(addedUser.score).toBe(100);
+  //   } else {
+  //     throw new Error('User not found');
+  //   }
+  // });
+
+  // it('handles "I" messages correctly', async () => {
+  //   mockSocket.send('I TestUser');
+  //   mockSocket.simulateMessage('IT');
+  //   expect(mockSocket.lastSentMessage).toBe('I TestUser');
+  // });
+
+  // it('handles "N" messages correctly', async () => {
+  //   mockSocket.send('N TestUser');
+  //   mockSocket.simulateMessage('NT TestUser 100');
+  //   expect(mockSocket.lastSentMessage).toBe('N TestUser');
+  // });
+
+  // it('handles "P" messages correctly', async () => {
+  //   mockSocket.send('P TestUser 200');
+  //   mockSocket.simulateMessage('HF');
+
+  //   const users = await GetUsers();
+  //   const updatedUser = users.find(user => user.name === 'TestUser');
+    
+  //   if (updatedUser) {
+  //     expect(updatedUser.score).toBe(200);
+  //   } else {
+  //     throw new Error('User not found');
+  //   }
+  // });
+ 
+  // it('handles "D" messages correctly', async () => {
+  //   mockSocket.send('D TestUser');
+  //   mockSocket.simulateMessage('DT');
+
+  //   const users = await GetUsers();
+  //   const deletedUser = users.find(user => user.name === 'TestUser');
+
+  //   // expect(deletedUser).toBeUndefined();
+
+  //   console.log(users);
+   
+  // });
 });

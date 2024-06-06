@@ -28,9 +28,7 @@ export async function DeleteUserById(id: number) {
     });
 }
 
-async function main() {
-    const users = await prisma.user.findMany();
-    console.log(users);}
+async function main() {}
 
 main()
     .then(async () => {

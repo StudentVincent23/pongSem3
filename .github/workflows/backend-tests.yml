@@ -59,4 +59,4 @@ jobs:
       - name: Run tests
         run: npm run test
         env:
-          DATABASE_URL: "file:./dev.db"
+          DATABASE_URL: "file:../backend./prisma/dev.db"

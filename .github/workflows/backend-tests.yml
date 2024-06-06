@@ -44,21 +44,27 @@ jobs:
           cd backend
           npm install
 
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432; do
+            sleep 1
+          done
+
       - name: Generate Prisma Client
         run: |
           cd backend
           npx prisma generate
 
-      - name: Apply migrations and run tests
+      - name: Apply migrations
         run: |
           cd backend
           npx prisma migrate deploy
-          npm run test
         env:
-          DATABASE_URL: "file::memory:"
+          DATABASE_URL: postgres://testuser:testpassword@localhost:5432/testdb
 
       - name: Run tests
-        run: npm run test
+        run: |
+          cd backend
+          npm run test
         env:
-          DATABASE_URL: "file:./backend/prisma/dev.db"
-        working-directory: ./backend
+          DATABASE_URL: postgres://testuser:testpassword@localhost:5432/testdb

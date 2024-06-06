@@ -60,3 +60,4 @@ jobs:
         run: npm run test
         env:
           DATABASE_URL: "file:./backend/prisma/dev.db"
+        working-directory: ./backend

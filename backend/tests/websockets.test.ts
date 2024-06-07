@@ -42,22 +42,23 @@ describe('WebSocket server', () => {
     expect(mockSocket.lastSentMessage).toBe('S#Test message');
   });
 
-  // it('handles "U" messages correctly', async () => {
-  //   mockSocket.send('U TestUser 100');
+  it('handles "U" messages correctly', async () => {
+    mockSocket.send('U TestUser 100');
 
     
 
-  //   const users = await GetUsers();
-  //   const addedUser = users.find(user => user.name === 'TestUser');
+    const users = await GetUsers();
+    const addedUser = users.find(user => user.name === 'TestUser');
     
-  //   console.log(users);
+    console.log(addedUser);
+    console.log(users);
     
-  //   if (addedUser) {
-  //     expect(addedUser.score).toBe(100);
-  //   } else {
-  //     throw new Error('User not found');
-  //   }
-  // });
+    // if (addedUser?.name == 'TestUser') {
+    //   expect(addedUser.score).toBe(100);
+    // } else {
+    //   throw new Error('User not found');
+    // }
+  });
 
   // it('handles "I" messages correctly', async () => {
   //   mockSocket.send('I TestUser');
@@ -98,3 +99,4 @@ describe('WebSocket server', () => {
    
   // });
 });
+

@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { AddUser, GetUsers, UpdateScoreOfUserById, DeleteUserById } from '../services';
-
-function delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
+import { AddUser, GetUsers, DeleteUserById } from '../services';
 
 describe('User Services', () => {
     const name = 'testUser06/06/2024';
@@ -30,6 +25,5 @@ describe('User Services', () => {
         } else {
             throw new Error('User not found not added');
         }
-
     });
 });

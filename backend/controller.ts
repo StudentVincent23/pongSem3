@@ -4,6 +4,7 @@
 import express from 'express';
 import * as http from 'http';
 import * as WebSocket from 'ws';
+// import WebSocket from 'ws'; // Ensure this is the default import
 import { AddUser, GetUsers, UpdateScoreOfUserById, DeleteUserById } from './services';
 
 const app = express();
@@ -92,4 +93,6 @@ server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-export { server, wss, handleMessage };
+export { server, wss, handleMessage};
+
+

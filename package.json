@@ -1,0 +1,18 @@
+{
+  "name": "pong",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "scripts": {
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:backend": "npm run test --prefix backend",
+    "test:frontend": "npm run test --prefix frontend"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-e2e-cypress": "~5.0.0",
+    "@vue/cli-plugin-typescript": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "cypress": "^9.7.0",
+    "vue-template-compiler": "^2.7.16"
+  }
+}

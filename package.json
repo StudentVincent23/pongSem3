@@ -6,7 +6,10 @@
   "scripts": {
     "test": "npm run test:frontend && npm run test:backend",
     "test:backend": "npm run test --prefix backend",
-    "test:frontend": "npm run test --prefix frontend"
+    "test:frontend": "npm run test --prefix frontend",
+    "coverage": "npm run coverage:frontend && npm run coverage:backend",
+    "coverage:backend": "npm run coverage --prefix backend",
+    "coverage:frontend": "npm run coverage --prefix frontend"
   },
   "devDependencies": {
     "@vue/cli-plugin-e2e-cypress": "~5.0.0",

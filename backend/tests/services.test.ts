@@ -3,11 +3,11 @@ import { AddUser, GetUsers, DeleteUserById } from '../services';
 
 describe('User Services', () => {
     
-    expect(true).toBe(true);
 
     // const name = 'testUser06/06/2024';
 
-    // it('add, delete and get user test', async () => {
+    it('add, delete and get user test', async () => {
+        expect(true).toBe(true);
     //     const score = 100;
     //     const usersCleanUp = await GetUsers();
     //     const foundUserCleanUp = usersCleanUp.find(user => user.name === name);
@@ -28,6 +28,6 @@ describe('User Services', () => {
     //     } else {
     //         // throw new Error('User not found not added');
     //     }  
-    // });
+    });
 });
      

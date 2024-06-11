@@ -8,7 +8,8 @@
     "prismastart": "npx prisma studio",
     "lint": "eslint . --ext .ts",
     "coverage": "c8 vitest run",
-    "test": "vitest"
+    "test": "vitest",
+    "report-coverage": "codeclimate-test-reporter < coverage/lcov.info"
   },
   "main": "index.js",
   "dependencies": {

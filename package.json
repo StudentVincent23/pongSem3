@@ -15,7 +15,7 @@
     "@vue/cli-plugin-e2e-cypress": "~5.0.0",
     "@vue/cli-plugin-typescript": "^5.0.8",
     "@vue/cli-service": "^5.0.8",
-    "cypress": "^9.7.0",
+    "cypress": "^13.11.0",
     "vue-template-compiler": "^2.7.16"
   }
 }

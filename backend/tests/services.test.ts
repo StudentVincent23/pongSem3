@@ -24,7 +24,7 @@ describe('User Services', () => {
             expect(foundUser?.score).toBe(score);
         } else {
             // throw new Error('User not found not added');
-        }
+        }  
     });
 });
      

@@ -49,10 +49,3 @@ jobs:
         run: |
           cd backend
           npm run coverage
-
-      - name: Report coverage to Code Climate
-        run: |
-          cd backend
-          npx codeclimate-test-reporter < coverage/lcov.info
-        env:
-          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}

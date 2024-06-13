@@ -42,10 +42,7 @@ jobs:
         run: |
           cd backend
           npm run test
+          npm run coverage
         env:
           DATABASE_URL: "file:./dev.db"
         
-      - name: Run coverage
-        run: |
-          cd backend
-          npm run coverage
